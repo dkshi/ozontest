@@ -4,6 +4,8 @@ import (
 	"github.com/dkshi/shortener/internal/repository"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type URL interface {
 	CreateShortURL(originalURL string) (string, error)
 	GetOriginalURL(shortURL string) (string, error)

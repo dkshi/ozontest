@@ -8,9 +8,6 @@ import (
 )
 
 func TestURLInMemory_CreateShortURL(t *testing.T) {
-	uim := newURLInMemory()
-	uim.StartGC()
-
 	testTable := []struct {
 		name             string
 		inputOriginalURL string
@@ -27,17 +24,17 @@ func TestURLInMemory_CreateShortURL(t *testing.T) {
 		},
 	}
 
-	for _, test := range testTable {
-		shortURL, err := uim.CreateShortURL(test.inputOriginalURL, test.inpurtShortURL)
-		assert.Equal(t, test.expectedShortURL, shortURL)
-		assert.Equal(t, test.expectedError, err)
+	for _, testCase := range testTable {
+		t.Run(testCase.name, func(t *testing.T) {
+			uim := newURLInMemory()
+			shortURL, err := uim.CreateShortURL(testCase.inputOriginalURL, testCase.inpurtShortURL)
+			assert.Equal(t, testCase.expectedShortURL, shortURL)
+			assert.Equal(t, testCase.expectedError, err)
+		})
 	}
 }
 
 func TestURLInMemory_GetOriginalURL(t *testing.T) {
-	uim := newURLInMemory()
-	uim.StartGC()
-
 	testTable := []struct {
 		name                string
 		inputOriginalURL    string
@@ -61,13 +58,16 @@ func TestURLInMemory_GetOriginalURL(t *testing.T) {
 		},
 	}
 
-	for _, test := range testTable {
-		if test.expectedOriginalURL != "" {
-			uim.CreateShortURL(test.inputOriginalURL, test.inputShortURL)
-		}
+	for _, testCase := range testTable {
+		t.Run(testCase.name, func(t *testing.T) {
+			uim := newURLInMemory()
+			if testCase.expectedOriginalURL != "" {
+				uim.CreateShortURL(testCase.inputOriginalURL, testCase.inputShortURL)
+			}
 
-		originalURL, err := uim.GetOriginalURL(test.inputShortURL)
-		assert.Equal(t, test.expectedOriginalURL, originalURL)
-		assert.Equal(t, test.expectedError, err)
+			originalURL, err := uim.GetOriginalURL(testCase.inputShortURL)
+			assert.Equal(t, testCase.expectedOriginalURL, originalURL)
+			assert.Equal(t, testCase.expectedError, err)
+		})
 	}
 }
