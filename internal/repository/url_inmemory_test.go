@@ -26,7 +26,7 @@ func TestURLInMemory_CreateShortURL(t *testing.T) {
 
 	for _, testCase := range testTable {
 		t.Run(testCase.name, func(t *testing.T) {
-			uim := newURLInMemory()
+			uim := NewURLInMemory()
 			shortURL, err := uim.CreateShortURL(testCase.inputOriginalURL, testCase.inpurtShortURL)
 			assert.Equal(t, testCase.expectedShortURL, shortURL)
 			assert.Equal(t, testCase.expectedError, err)
@@ -60,7 +60,7 @@ func TestURLInMemory_GetOriginalURL(t *testing.T) {
 
 	for _, testCase := range testTable {
 		t.Run(testCase.name, func(t *testing.T) {
-			uim := newURLInMemory()
+			uim := NewURLInMemory()
 			if testCase.expectedOriginalURL != "" {
 				uim.CreateShortURL(testCase.inputOriginalURL, testCase.inputShortURL)
 			}

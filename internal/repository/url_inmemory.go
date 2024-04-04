@@ -2,14 +2,8 @@ package repository
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 	"time"
-)
-
-const (
-	urlTTL          = time.Hour * 24 * 7 // Time to live of URL, 7 days
-	cleanupInterval = time.Hour * 24     // Interval of cleaning expired keys, 1
 )
 
 type urlItem struct {
@@ -27,7 +21,7 @@ type URLInMemory struct {
 	db *urlInMemoryDB
 }
 
-func newURLInMemory() *URLInMemory {
+func NewURLInMemory() *URLInMemory {
 	return &URLInMemory{db: &urlInMemoryDB{
 		shortened: make(map[string]urlItem),
 		originals: make(map[string]string),
@@ -70,7 +64,7 @@ func (r *URLInMemory) GetOriginalURL(shortURL string) (string, error) {
 func (r *URLInMemory) GC() {
 	for {
 		<-time.After(cleanupInterval)
-		fmt.Println(r.db.shortened)
+
 		expiredURLs := r.getExpiredURLs()
 		r.deleteExpiredURLs(expiredURLs)
 	}
