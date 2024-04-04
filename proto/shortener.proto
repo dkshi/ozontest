@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package shortener;
+
+option go_package = "ozon.shortener.v1;shortenerv1";
+
+service Shortener {
+    // Returns short version of the original URL
+    rpc CreateShortURL (OriginalURL) returns (ShortURL);
+    // Returns original URL from short URL
+    rpc GetOriginalURL (ShortURL) returns (OriginalURL);
+}
+
+message ShortURL {
+    string url = 1;
+}
+
+message OriginalURL {
+    string url = 1;
+}
